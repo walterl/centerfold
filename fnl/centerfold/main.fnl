@@ -1,12 +1,12 @@
 (module centerfold.main
-  {require {math   math
-            nvim   aniseed.nvim}})
+  {require {math math
+            nvim aniseed.nvim}})
 
 (defn viml->lua [m f opts] ; From conjure.bridge
   (.. "lua require('" m "')['" f "']("
       (or (and opts opts.args) "") ")"))
 
-(defn center-last-visual [...]
+(defn center-last-visual []
   (let [[_ start-line _ _] (nvim.fn.getpos "'<")
         [_ end-line _ _]   (nvim.fn.getpos "'>")
         midway-line        (math.floor (/ (+ start-line end-line) 2))]

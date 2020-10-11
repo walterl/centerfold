@@ -53,7 +53,7 @@ do
   local v_0_ = nil
   do
     local v_0_0 = nil
-    local function center_last_visual0(...)
+    local function center_last_visual0()
       local _3_ = nvim.fn.getpos("'<")
       local _ = _3_[1]
       local start_line = _3_[2]
