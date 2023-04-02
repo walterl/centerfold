@@ -1,65 +1,58 @@
-local _0_0 = nil
-do
-  local name_0_ = "centerfold.aniseed.fs"
-  local loaded_0_ = package.loaded[name_0_]
-  local module_0_ = nil
-  if ("table" == type(loaded_0_)) then
-    module_0_ = loaded_0_
-  else
-    module_0_ = {}
-  end
-  module_0_["aniseed/module"] = name_0_
-  module_0_["aniseed/locals"] = (module_0_["aniseed/locals"] or {})
-  module_0_["aniseed/local-fns"] = (module_0_["aniseed/local-fns"] or {})
-  package.loaded[name_0_] = module_0_
-  _0_0 = module_0_
-end
-local function _2_(...)
-  local ok_3f_0_, val_0_ = nil, nil
-  local function _2_()
-    return {require("centerfold.aniseed.nvim")}
-  end
-  ok_3f_0_, val_0_ = pcall(_2_)
-  if ok_3f_0_ then
-    _0_0["aniseed/local-fns"] = {require = {nvim = "centerfold.aniseed.nvim"}}
-    return val_0_
-  else
-    return print(val_0_)
-  end
-end
-local _1_ = _2_(...)
-local nvim = _1_[1]
-local _2amodule_2a = _0_0
+local _2afile_2a = "fnl/aniseed/fs.fnl"
 local _2amodule_name_2a = "centerfold.aniseed.fs"
-do local _ = ({nil, _0_0, {{}, nil, nil, nil}})[2] end
-local basename = nil
+local _2amodule_2a
 do
-  local v_0_ = nil
-  do
-    local v_0_0 = nil
-    local function basename0(path)
-      return nvim.fn.fnamemodify(path, ":h")
-    end
-    v_0_0 = basename0
-    _0_0["basename"] = v_0_0
-    v_0_ = v_0_0
-  end
-  _0_0["aniseed/locals"]["basename"] = v_0_
-  basename = v_0_
+  package.loaded[_2amodule_name_2a] = {}
+  _2amodule_2a = package.loaded[_2amodule_name_2a]
 end
-local mkdirp = nil
+local _2amodule_locals_2a
 do
-  local v_0_ = nil
-  do
-    local v_0_0 = nil
-    local function mkdirp0(dir)
-      return nvim.fn.mkdir(dir, "p")
-    end
-    v_0_0 = mkdirp0
-    _0_0["mkdirp"] = v_0_0
-    v_0_ = v_0_0
-  end
-  _0_0["aniseed/locals"]["mkdirp"] = v_0_
-  mkdirp = v_0_
+  _2amodule_2a["aniseed/locals"] = {}
+  _2amodule_locals_2a = (_2amodule_2a)["aniseed/locals"]
 end
-return nil
+local autoload = (require("centerfold.aniseed.autoload")).autoload
+local a, nvim = autoload("centerfold.aniseed.core"), autoload("centerfold.aniseed.nvim")
+do end (_2amodule_locals_2a)["a"] = a
+_2amodule_locals_2a["nvim"] = nvim
+local function basename(path)
+  return nvim.fn.fnamemodify(path, ":h")
+end
+_2amodule_2a["basename"] = basename
+local function mkdirp(dir)
+  return nvim.fn.mkdir(dir, "p")
+end
+_2amodule_2a["mkdirp"] = mkdirp
+local function relglob(dir, expr)
+  local dir_len = a.inc(string.len(dir))
+  local function _1_(_241)
+    return string.sub(_241, dir_len)
+  end
+  return a.map(_1_, nvim.fn.globpath(dir, expr, true, true))
+end
+_2amodule_2a["relglob"] = relglob
+local function glob_dir_newer_3f(a_dir, b_dir, expr, b_dir_path_fn)
+  local newer_3f = false
+  for _, path in ipairs(relglob(a_dir, expr)) do
+    if (nvim.fn.getftime((a_dir .. path)) > nvim.fn.getftime((b_dir .. b_dir_path_fn(path)))) then
+      newer_3f = true
+    else
+    end
+  end
+  return newer_3f
+end
+_2amodule_2a["glob-dir-newer?"] = glob_dir_newer_3f
+local path_sep
+do
+  local os = string.lower(jit.os)
+  if (("linux" == os) or ("osx" == os) or ("bsd" == os)) then
+    path_sep = "/"
+  else
+    path_sep = "\\"
+  end
+end
+_2amodule_2a["path-sep"] = path_sep
+local function macro_file_path_3f(path)
+  return (a["string?"](string.match(path, "macros?.fnl$")) or a["string?"](string.match(path, (path_sep .. "macros?" .. path_sep))))
+end
+_2amodule_2a["macro-file-path?"] = macro_file_path_3f
+return _2amodule_2a
