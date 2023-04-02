@@ -1,6 +1,5 @@
 (module centerfold.main
-  {require {math math
-            nvim centerfold.aniseed.nvim}})
+  {require {nvim centerfold.aniseed.nvim}})
 
 (defn viml->lua [m f opts] ; From conjure.bridge
   (.. "lua require('" m "')['" f "']("
